@@ -1,0 +1,137 @@
+\documentclass[10pt,twocolumn]{article} 
+
+\usepackage{oxycomps} % use the main oxycomps style file
+
+\bibliography{references}
+
+\pdfinfo{
+    /Title (Writing Your Oxy CS Comps Paper in LaTeX)
+    /Author (Justin Li)
+}
+
+\title{Tarot Reading Web App}
+
+\author{Darius Amir}
+\affiliation{Occidental College}
+\email{mamir@oxy.edu}
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+
+\end{abstract}
+
+\section{Introduction}
+
+\section{The Oxy CS Comps Paper}
+
+\subsection{Goals}
+
+\subsection{Audience}
+
+\subsection{Requirements}
+
+\section{Sections of the Oxy CS Comps Paper}
+
+\subsection{Introduction and Background}
+
+\subsection{Problem Context}
+
+Tarot readings have existed for centuries \cite{decker_dummett_2013} and have been used for divination and storytelling purposes. A standard deck based on the Rider Waite system \cite{tarot.com} is made up of 78 cards, each of which have their own meanings and keywords associated with them. Tarot readers use these standard meanings in addition to their own interpretations in order to come up with engaging readings for their audience. 
+
+Recently, tarot has become popularized further by social media users such as Stargirl\cite{youtube2} and Vanessa Somuayina\cite{youtube} on Youtube. As a result, many users are beginning to seek more personalized readings for themselves. Although tarot readers are vast in quantity, prices are typically expensive for in person readings. Many readers have begun to conduct readings online as well, but there is still a high cost attached. 
+
+When users go online in search for automated generators, their choices are very limited. Prior work in this field, as will be discussed further in the Technical Background and Prior Work sections, lack variance and complexity. Typically, card meanings are stored in a file and the web apps simply read out the same generic meaning each time a card is drawn. Moreover, preexisting web apps lack interactivity and often have similar interfaces. Because of these reasons, there exists a need for a tarot reading web application that is more fun, interactive, and offers less repetition in readings. 
+
+Overall, an engaging automated tarot web application would help provide entertainment to a variety of users that seek for tarot readings online. Previously unserved users that faced financial or location-based barriers would be able to get readings as well. It would also further research in the field of story generation in the context of generalized second person narrations. Such a tool could also potentially be used to help with inspiration for creative work by novelists, songwriters, and visual artists.
+
+\subsection{Technical Background}
+This section will take a look at previous algorithmic approaches taken specifically by tarot web applications and then look into current techniques in the field of story generation.
+\subsubsection{Approaches Taken by Tarot Web Applications}
+
+Prior work that generates tarot readings or tarot based narrations has used similar techniques. Because specific code is not available for most applications, assumptions are made about algorithmic approaches. The only approach free of assumptions is that dealing with the example of tarot-based narrations at the end.
+
+The first approach common in tarot generation web apps is letting the user draw a singular card and then most likely reading from a large file of meanings. For example, the website Labrynthos has preset meanings associated with each upright and reversed card that it displays to a user once it is drawn \cite{labrynthos}. One of these meanings is as follows for the Page of Pentacles card:
+
+    "This card indicates that you are on the brink of giving life to a new venture or opportunity that brings you luck in the material world. You are full of enthusiasm and energy to make this new opportunity come to life." \cite{labrynthos}
+    
+Reoccurring drawings of this card would once again result the same meaning being shown to the user. 
+
+The second approach used by web applications is similar to the first in the fact that it likely reads from a large file of meanings. However, this approach also uses spreads. Tarot spreads are essentially layouts used for reading cards. Based on where a card is located in a spread, it can mean something different \cite{wen2015holistic}. An example of this approach is LT's free tarot reading tool \cite{lt}. The site uses a six card spread and likely has separate meanings recorded for each possible location a tarot card might show up in. For example, the first position deals with "How you feel about yourself" and the associated meaning listed when the Strength card is drawn is "You feel that despite the challenges you have been faced with in the past, present or future, you will find the strength and courage to succeed..."
+
+The third approach used by tarot reading web applications is a Mad Libs type algorithm. Anne Sullivan from Georgia Institute of Technology, Mirjam Palosaari Eladhari from Södertörn University, and Michael Cook from Max Planck Institute for Software
+Systems worked together to develop a tarot narration tool through this method \cite{Sullivan2018TarotbasedNG}. They used a json file to store card meanings. Each card essentially had a few meanings associated with it that were either considered "light," "dark," or "fortune telling" messages. Furthermore, meanings were different depending on if the card appeared reversed or upright. In order to create the narrations, they use one of two types of story structures available: tragedy or comedy. Once the cards are drawn, their associated meanings stored in the file fill up the spaces in these story structure templates. An example of this story template is below:
+
+"[Character] wants most of all to [upright],
+
+and all they need to do to get there is [reversed].
+
+Things are looking up in response,
+
+and [Character] finds themselves [upright].
+
+But then the tide turns and [Character] is [reversed].
+
+Will they make it through, or will [Character]
+
+be remembered only for [reversed]?"
+ 
+\subsubsection{Approaches Taken By Story Generators}
+The goal of my algorithm will be to take a set of keywords associated with the cards the user draws and generate a reading in second person based upon them. The order of the keywords would be important, and the generated reading would ideally some (if not all) of the keywords inside of it. For this approach, I would likely need a large dataset of stories that are general. This may be difficult to find. Although I am not aware of the technical details of the exact approach I will be using, this section will highlight several that may pose to be helpful.
+
+Sivasurya Santhanam from the Institute for Software Technology used long short-term memory(LSTM) networks in order to generate text, specifically paying attention to context when doing so \cite{Santhanam2020ContextBT}. Long short-term memory is a recurrent neural network (RNN) that makes use of the gates input, forget, and output. The model was given a context vector alongside some input words, both of which were trained. It was found that the context based models had higher performance compared to non-context based according to the evaluation results.
+
+Yao et al.\cite{yao_peng_weischedel_knight_zhao_yan_2019} worked to generate stories based upon titles that were given to the model as inputs. To do so, a hierarchical framework was employed to first initially create a story line and then write a story based upon that story line. Two planning strategies were used. The dynamic strategy interwove the planning of the story and surface realization together, while the static method planned out the whole story before generating text. It was found that both these strategies outperformed the baseline, which used no planning, when it comes to coherence and interestingness. This is an example of a generated story using the dynamic approach given the title of "The Computer":
+"Storyline: needed → money → computer → bought → happy
+
+Story: John needed a computer for his birthday. He worked hard to earn money. John was able to buy his
+computer. He went to the store and bought a computer. John was happy with his new computer"
+
+Jain et all \cite{jain_agrawal_mishra_sukhwani_laha_sankaranarayanan_2017} used short descriptions in order to generate short stories. To do this, they first used Statistical Machine Translation in order to translate phrases and then used a RNN to encode sentences into coherent stories. This is an example of the story that was generated:
+
+"On their trip to location, they arrive in front of a river. They decide to check out the city. They think its too packed with people, so they go sight seeing. The indoor poor temps them, but they decide not to jump in. They come across some ducks."
+
+Tambwekar et al\cite{tambwekar_dhuliawala_martin_mehta_harrison_riedl_2019} utilized  a controlled story generation technique which consisted of start and final states. To guide the story through these states, reinforcement learning was used.
+
+Moreover, large scale models such as GPT-2\cite{tambwekar_dhuliawala_martin_mehta_harrison_riedl_2019} have been used to generate large amount of texts. The model is able to be flexible to the style and content of the input text that it is given. The model was not trained on domain-specific data sets, yet still outperformed models that were.
+
+
+\subsection{Prior Work}
+This section will explore how tarot has been used to generate stories at large as well as through web applications. 
+
+\subsubsection{Prior Use and Applications of Tarot}
+    Tarot originated as a card game in the 1440s during the time of the Italian Renaissance . Verifiable evidence of psychics using them for fortune telling purposes dates back to the 1700s \cite{wen2015holistic}. Occultists would essentially use the meanings associated with the cards (whether they were based on their own interpretations or someone else) in order to form stories about the people they were reading for. Presently, tarot continues to be used for divination purposes. However, beyond that, current psychologists such as Dr. Arthur Rosengarten use it for therapeutic purposes \cite{chaliceL} and creatives turn to it for inspiration for their work \cite{gypsy_2021}.
+\subsubsection{Previous Tarot Web Apps}
+    Numerous attempts have been made at creating tarot reading web applications that generate readings for it's 
+    users. However, many of them have major shortcomings. This section will delve into several of these applications. To limit redundancy, details that were previously discussed about these works will be omitted.
+    
+    As described above in the Technical Background section, Labrynthos\cite{labrynthos} and LT's reading tool\cite{lt} would generate the same reading if the user was to hypothetically draw the same type of card again. This type of repetition can potentially cause the user to feel that the readings they are given are robotic and untrue as compared to a real human tarot reader. Additionally, while these two applications do allow for some user interaction, it is overall very limited. In Labrynthos, a user is only able to select a deck and then click on a card in order to generate a reading. LT takes it one step further by allowing the user to shuffle the deck and pick multiple cards. However, both of these don't allow users to choose the amount of cards they pick or the topic of the reading. They also display the reading in a formulaic way that many other tarot reading generator sites use as well. This likely leads to boredom among users of these applications.
+    
+    The tarot narration tool developed by Anne Sullivan and her peers\cite{Sullivan2018TarotbasedNG} that was also explored in the Technical Background section falls short, too. While it does generate messages in an arguably less formulaic format, these generated messages are not readings targeted towards the user. Instead, they are meant to read similar to synopses for stories since the goals of the project were not to generate personalized readings for the user. 
+    
+    Another tarot reading web application is called Roll For Fantasy \cite{roll}. This app allows the user to choose a specific reading spread from the fifteen available. The user is then able to click the cards individually to flip them or reveal them all by clicking a button. In order to receive a reading, they would have to scroll down and click on individual cards to view their meanings. Instead of full sentences, this site only gives the user keywords associated with the cards in place of their reading. For example, if they draw the Page of Pentacles, the user would see the meaning 
+    
+    "Meaning: Management, rule.
+    
+    Meaning reversed: Luxury, liberality."
+    
+    This type of approach places a lot of responsibility on the user to interpret the cards. Additionally, the design of the website is difficult to navigate, which likely causes frustrations among its users.
+
+    
+\subsection
+{Methods}
+\subsection{Evaluation}
+
+\subsection{Ethical Considerations}
+
+\subsection{Limitations, Future Work, and Conclusion}
+
+\subsection{Appendices}
+
+\section{Conclusion}
+
+\printbibliography 
+
+\end{document}
